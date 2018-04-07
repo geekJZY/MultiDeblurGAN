@@ -22,7 +22,11 @@ class ConditionalGAN(BaseModel):
 		BaseModel.initialize(self, opt)
 		self.isTrain = opt.isTrain
 		# define tensors
-		self.input_A = self.Tensor(opt.batchSize, opt.input_nc,
+		self.input_0 = self.Tensor(opt.batchSize, opt.input_nc,
+								   opt.fineSize, opt.fineSize)
+		self.input_1 = self.Tensor(opt.batchSize, opt.input_nc,
+								   opt.fineSize, opt.fineSize)
+		self.input_2 = self.Tensor(opt.batchSize, opt.input_nc,
 								   opt.fineSize, opt.fineSize)
 		self.input_B = self.Tensor(opt.batchSize, opt.output_nc,
 								   opt.fineSize, opt.fineSize)

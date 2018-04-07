@@ -3,7 +3,7 @@ batchSize: 1
 beta1: 0.5
 checkpoints_dir: ./checkpoints
 continue_train: False
-dataroot: /home/jzy/BeginOfResearch/our_work/data/GOPRO_Large/train/
+dataroot: /scratch/user/jiangziyu/data/GOPRO_Large/train/
 dataset_mode: aligned
 display_freq: 100
 display_id: 1
@@ -13,7 +13,7 @@ display_winsize: 256
 epoch_count: 1
 fineSize: 256
 gan_type: wgan-gp
-gpu_ids: []
+gpu_ids: [0]
 identity: 0.0
 input_nc: 3
 isTrain: True

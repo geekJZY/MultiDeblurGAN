@@ -117,10 +117,7 @@ class ResnetGenerator(nn.Module):
 				 nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0,
 						   bias=False)]
 
-		model = [nn.ReflectionPad2d(3),
-				 nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0,
-						   bias=use_bias),
-				 norm_layer(ngf),
+		model = [norm_layer(ngf),
 				 nn.ReLU(True)]
 
 		n_downsampling = 2
@@ -153,15 +150,20 @@ class ResnetGenerator(nn.Module):
 		self.model = nn.Sequential(*model)
 
 	def forward(self, input0, input1, input2):
-		if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor) and self.use_parallel:
-			output = nn.parallel.data_parallel(self.model, input, self.gpu_ids)
+		if self.gpu_ids and isinstance(input0.data, torch.cuda.FloatTensor) and self.use_parallel:
+			input0 = nn.parallel.data_parallel(self.input0Prc,input0)
+			inputOrigin = input1
+			input1 = nn.parallel.data_parallel(self.input1Prc,input1)
+			input2 = nn.parallel.data_parallel(self.input2Prc,input2)
+			output = nn.parallel.data_parallel(self.model, input0+input1+input2)
 		else:
-			input0 = self.model(input0)
-			input1 = self.model(input1)
-			input2 = self.model(input2)
+			input0 = self.input0Prc(input0)
+			inputOrigin = input1
+			input1 = self.input1Prc(input1)
+			input2 = self.input2Prc(input2)
 			output = self.model(input0+input1+input2)
 		if self.learn_residual:
-			output = input1 + output
+			output = inputOrigin + output
 			output = torch.clamp(output,min = -1,max = 1)
 		return output
 
