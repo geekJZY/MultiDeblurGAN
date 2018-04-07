@@ -64,16 +64,21 @@ class ConditionalGAN(BaseModel):
 		print('-----------------------------------------------')
 
 	def set_input(self, input):
-		AtoB = self.opt.which_direction == 'AtoB'
-		input_A = input['A' if AtoB else 'B']
-		input_B = input['B' if AtoB else 'A']
-		self.input_A.resize_(input_A.size()).copy_(input_A)
+		input_0 = input['image0']
+		input_1 = input['image1']
+		input_2 = input['image2']
+		input_B = input['label']
+		self.input_0.resize_(input_0.size()).copy_(input_0)
+		self.input_1.resize_(input_1.size()).copy_(input_1)
+		self.input_2.resize_(input_2.size()).copy_(input_2)
 		self.input_B.resize_(input_B.size()).copy_(input_B)
-		self.image_paths = input['A_paths' if AtoB else 'B_paths']
+		#self.image_paths = input['A_paths' if AtoB else 'B_paths']
 
 	def forward(self):
-		self.real_A = Variable(self.input_A)
-		self.fake_B = self.netG.forward(self.real_A)
+		self.real_A = Variable(self.input_1)
+		self.real_A_pre = Variable(self.input_0)
+		self.real_A_after = Variable(self.input_2)
+		self.fake_B = self.netG.forward(self.real_A_pre, self.real_A, self.real_A_after)
 		self.real_B = Variable(self.input_B)
 
 	# no backprop gradients

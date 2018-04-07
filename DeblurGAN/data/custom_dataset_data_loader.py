@@ -5,8 +5,8 @@ from data.base_data_loader import BaseDataLoader
 def CreateDataset(opt):
     dataset = None
     if opt.dataset_mode == 'aligned':
-        from data.aligned_dataset import AlignedDataset
-        dataset = AlignedDataset()
+        from data.reblur_dataset import reblurDataSet
+        dataset = reblurDataSet()
     elif opt.dataset_mode == 'unaligned':
         from data.unaligned_dataset import UnalignedDataset
         dataset = UnalignedDataset()
