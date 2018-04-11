@@ -1,9 +1,9 @@
 ------------ Options -------------
-batchSize: 1
+batchSize: 8
 beta1: 0.5
 checkpoints_dir: ./checkpoints
 continue_train: False
-dataroot: /scratch/user/jiangziyu/data/GOPRO_Large/train/
+dataroot: ../../../data/train/
 dataset_mode: aligned
 display_freq: 100
 display_id: 1
