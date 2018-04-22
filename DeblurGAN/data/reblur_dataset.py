@@ -43,7 +43,7 @@ class reblurDataSet(BaseDataset):
             img_name = os.path.join(self.root_dir, self.folders[cnt], "sharp"
                                 ,str(self.foldersStart[cnt]+offset+index).zfill(6)+".png")
             sample['image'+str(index)] = Image.open(img_name).convert('RGB')
-        label_name = os.path.join(os.path.join(self.root_dir, self.folders[cnt], "blur"
+        label_name = os.path.join(os.path.join(self.root_dir, self.folders[cnt], "blur_gamma"
                                 ,str(self.foldersStart[cnt]+offset+1).zfill(6)+".png"))
         sample['label'] = Image.open(label_name).convert('RGB')
         sample = {key:self.transform(sample[key]) for key in sample}

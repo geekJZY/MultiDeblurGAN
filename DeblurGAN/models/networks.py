@@ -49,7 +49,8 @@ def define_G(input_nc, output_nc, ngf, which_model_netG, norm='batch', use_dropo
 	else:
 		raise NotImplementedError('Generator model name [%s] is not recognized' % which_model_netG)
 	if len(gpu_ids) > 0:
-		netG=torch.nn.DataParallel(netG).cuda()
+		netG.cuda()
+		#netG=torch.nn.DataParallel(netG).cuda()
 	netG.apply(weights_init)
 	return netG
 
@@ -70,6 +71,7 @@ def define_D(input_nc, ndf, which_model_netD,
 		raise NotImplementedError('Discriminator model name [%s] is not recognized' %
 								  which_model_netD)
 	if use_gpu:
+		#netD.cuda()
 		netD=torch.nn.DataParallel(netD).cuda()
 	netD.apply(weights_init)
 	return netD
@@ -107,17 +109,10 @@ class ResnetGenerator(nn.Module):
 		else:
 			use_bias = norm_layer == nn.InstanceNorm2d
 
-		input0Prc = [nn.ReflectionPad2d(3),
+		model = [nn.ReflectionPad2d(3),
 				 nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0,
-						   bias=use_bias)]
-		input1Prc = [nn.ReflectionPad2d(3),
-				 nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0,
-						   bias=False)]
-		input2Prc = [nn.ReflectionPad2d(3),
-				 nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0,
-						   bias=False)]
-
-		model = [norm_layer(ngf),
+						   bias=use_bias),
+				 norm_layer(ngf),
 				 nn.ReLU(True)]
 
 		n_downsampling = 2
@@ -144,26 +139,15 @@ class ResnetGenerator(nn.Module):
 		model += [nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0)]
 		model += [nn.Tanh()]
 
-		self.input0Prc = nn.Sequential(*input0Prc)
-		self.input1Prc = nn.Sequential(*input1Prc)
-		self.input2Prc = nn.Sequential(*input2Prc)
 		self.model = nn.Sequential(*model)
 
-	def forward(self, input0, input1, input2):
-		if self.gpu_ids and isinstance(input0.data, torch.cuda.FloatTensor) and self.use_parallel:
-			input0 = nn.parallel.data_parallel(self.input0Prc,input0)
-			inputOrigin = input1
-			input1 = nn.parallel.data_parallel(self.input1Prc,input1)
-			input2 = nn.parallel.data_parallel(self.input2Prc,input2)
-			output = nn.parallel.data_parallel(self.model, input0+input1+input2)
+	def forward(self, input):
+		if self.gpu_ids and isinstance(input.data, torch.cuda.FloatTensor) and self.use_parallel:
+			output = nn.parallel.data_parallel(self.model, input, self.gpu_ids)
 		else:
-			input0 = self.input0Prc(input0)
-			inputOrigin = input1
-			input1 = self.input1Prc(input1)
-			input2 = self.input2Prc(input2)
-			output = self.model(input0+input1+input2)
+			output = self.model(input)
 		if self.learn_residual:
-			output = inputOrigin + output
+			output = input + output
 			output = torch.clamp(output,min = -1,max = 1)
 		return output
 

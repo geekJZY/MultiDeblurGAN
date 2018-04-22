@@ -1,0 +1,2 @@
+1.txt both blur and deblur nets are frozen, num_layers_frozen=21, num_epoch=100, num_workers=2, learning_rate=0.0003, supervised training
+2.txt both blur and deblur nets are frozen, num_layers_frozen=21, num_epoch=100, num_workers=2, learning_rate=0.0002, unsupervised training 
