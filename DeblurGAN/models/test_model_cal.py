@@ -25,7 +25,7 @@ class TestModel(BaseModel):
                                       opt.learn_residual)
         which_epoch = opt.which_epoch
         self.netG.cuda()
-        self.load_network(self.netG, 'G', which_epoch)
+        self.load_network(self.netG, 'deblur_G', which_epoch)
         for param in self.netG.parameters():
                 param.requires_grad=False
         print('---------- Networks initialized -------------')
@@ -43,14 +43,15 @@ class TestModel(BaseModel):
         self.inputB = input['label']
 
     def test(self):
-        self.real_A = Variable(self.input_1)
-        self.real_A_pre = Variable(self.input_0)
-        self.real_A_after = Variable(self.input_2)
+        self.real_A = Variable(self.input_1, volatile=True)
+        self.real_A_pre = Variable(self.input_0, volatile=True)
+        self.real_A_after = Variable(self.input_2, volatile=True)
         self.fake_B = self.netG.forward(self.real_A_pre, self.real_A, self.real_A_after)
 
 
     def get_current_visuals(self):
         real_B = self.inputB[0,:,:,:].cpu().numpy()
         real_B = (np.transpose(real_B, (1, 2, 0)) + 1) / 2.0 * 255.0
+        real_B = real_B.astype(np.uint8)
         fake_B = util.tensor2im(self.fake_B.data)
         return OrderedDict([('real_B', real_B.astype(np.uint8)), ('fake_B', fake_B)])

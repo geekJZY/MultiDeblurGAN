@@ -71,8 +71,8 @@ def define_D(input_nc, ndf, which_model_netD,
 		raise NotImplementedError('Discriminator model name [%s] is not recognized' %
 								  which_model_netD)
 	if use_gpu:
-		#netD.cuda()
-		netD=torch.nn.DataParallel(netD).cuda()
+		netD.cuda()
+		#netD=torch.nn.DataParallel(netD).cuda()
 	netD.apply(weights_init)
 	return netD
 

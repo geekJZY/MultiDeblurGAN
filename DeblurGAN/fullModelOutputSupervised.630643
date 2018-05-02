@@ -1,0 +1,214 @@
+['fullModelSupervised.py', '--dataroot', '/scratch/user/jiangziyu/train/', '--learn_residual', '--resize_or_crop', 'scale_width', '--fineSize', '256', '--batchSize', '4', '--name', 'fullModelSupervised', '--model', 'pix2pix']
+------------ Options -------------
+batchSize: 4
+beta1: 0.5
+checkpoints_dir: ./checkpoints
+continue_train: False
+dataroot: /scratch/user/jiangziyu/train/
+dataset_mode: aligned
+display_freq: 100
+display_id: 1
+display_port: 8097
+display_single_pane_ncols: 0
+display_winsize: 256
+epoch_count: 1
+fineSize: 256
+gan_type: wgan-gp
+gpu_ids: [0]
+identity: 0.0
+input_nc: 3
+isTrain: True
+lambda_A: 100.0
+lambda_B: 10.0
+learn_residual: True
+loadSizeX: 640
+loadSizeY: 360
+lr: 0.0001
+max_dataset_size: inf
+model: pix2pix
+nThreads: 2
+n_layers_D: 3
+name: fullModelSupervised
+ndf: 64
+ngf: 64
+niter: 150
+niter_decay: 150
+no_dropout: False
+no_flip: False
+no_html: False
+norm: instance
+output_nc: 3
+phase: train
+pool_size: 50
+print_freq: 100
+resize_or_crop: scale_width
+save_epoch_freq: 5
+save_latest_freq: 5000
+serial_batches: False
+which_direction: AtoB
+which_epoch: latest
+which_model_netD: basic
+which_model_netG: resnet_9blocks
+-------------- End ----------------
+------- Networks deblur_G initialized ---------
+ResnetGenerator(
+  (model): Sequential(
+    (0): ReflectionPad2d((3, 3, 3, 3))
+    (1): Conv2d(3, 64, kernel_size=(7, 7), stride=(1, 1))
+    (2): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=False)
+    (3): ReLU(inplace)
+    (4): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (5): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False)
+    (6): ReLU(inplace)
+    (7): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+    (8): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+    (9): ReLU(inplace)
+    (10): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (11): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (12): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (13): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (14): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (15): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (16): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (17): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (18): ResnetBlock(
+      (conv_block): Sequential(
+        (0): ReflectionPad2d((1, 1, 1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (2): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+        (3): ReLU(inplace)
+        (4): Dropout(p=0.5)
+        (5): ReflectionPad2d((1, 1, 1, 1))
+        (6): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1))
+        (7): InstanceNorm2d(256, eps=1e-05, momentum=0.1, affine=False)
+      )
+    )
+    (19): ConvTranspose2d(256, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (20): InstanceNorm2d(128, eps=1e-05, momentum=0.1, affine=False)
+    (21): ReLU(inplace)
+    (22): ConvTranspose2d(128, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), output_padding=(1, 1))
+    (23): InstanceNorm2d(64, eps=1e-05, momentum=0.1, affine=False)
+    (24): ReLU(inplace)
+    (25): ReflectionPad2d((3, 3, 3, 3))
+    (26): Conv2d(64, 3, kernel_size=(7, 7), stride=(1, 1))
+    (27): Tanh()
+  )
+)
+Total number of parameters: 11378179
+-----------------------------------------------
+Total number of layers are: 28 ,number of layers frozen are: 50
+more than 1 GPU detected...
+(epoch 0 itr 20), unsupervised loss is 0.016469, L1 loss is 0.051347, loss is 0.021604
+(epoch 0 itr 40), unsupervised loss is 0.017879, L1 loss is 0.088173, loss is 0.026696
+(epoch 0 itr 60), unsupervised loss is 0.010025, L1 loss is 0.060212, loss is 0.016046
+(epoch 0 itr 80), unsupervised loss is 0.011008, L1 loss is 0.059413, loss is 0.016949
+(epoch 0 itr 100), unsupervised loss is 0.011201, L1 loss is 0.068160, loss is 0.018017
+(epoch 0 itr 120), unsupervised loss is 0.011010, L1 loss is 0.050735, loss is 0.016084
+(epoch 0 itr 140), unsupervised loss is 0.011023, L1 loss is 0.069800, loss is 0.018003
+(epoch 0 itr 160), unsupervised loss is 0.012265, L1 loss is 0.050383, loss is 0.017303
+(epoch 0 itr 180), unsupervised loss is 0.010341, L1 loss is 0.069513, loss is 0.017292
+(epoch 0 itr 200), unsupervised loss is 0.010036, L1 loss is 0.080875, loss is 0.018123
+(epoch 0 itr 220), unsupervised loss is 0.012857, L1 loss is 0.054339, loss is 0.018291
+(epoch 0 itr 240), unsupervised loss is 0.009672, L1 loss is 0.081785, loss is 0.017850
+(epoch 0 itr 260), unsupervised loss is 0.008974, L1 loss is 0.065931, loss is 0.015567
+(epoch 0 itr 280), unsupervised loss is 0.008167, L1 loss is 0.037904, loss is 0.011957
+(epoch 0 itr 300), unsupervised loss is 0.010954, L1 loss is 0.070525, loss is 0.018007
+(epoch 0 itr 320), unsupervised loss is 0.011001, L1 loss is 0.058444, loss is 0.016845
+(epoch 0 itr 340), unsupervised loss is 0.010035, L1 loss is 0.078072, loss is 0.017842
+(epoch 0 itr 360), unsupervised loss is 0.007893, L1 loss is 0.077208, loss is 0.015614
+(epoch 0 itr 380), unsupervised loss is 0.009024, L1 loss is 0.068701, loss is 0.015894
+(epoch 0 itr 400), unsupervised loss is 0.008970, L1 loss is 0.064078, loss is 0.015378
+(epoch 0 itr 420), unsupervised loss is 0.009480, L1 loss is 0.073578, loss is 0.016838
+(epoch 0 itr 440), unsupervised loss is 0.011315, L1 loss is 0.086665, loss is 0.019982
+(epoch 0 itr 460), unsupervised loss is 0.007353, L1 loss is 0.034408, loss is 0.010794
+(epoch 0 itr 480), unsupervised loss is 0.008220, L1 loss is 0.048399, loss is 0.013060
+(epoch 0 itr 500), unsupervised loss is 0.010038, L1 loss is 0.067711, loss is 0.016809
+slurmstepd: error: *** JOB 630643 ON tgpu-0301 CANCELLED AT 2018-04-24T11:01:16 ***
