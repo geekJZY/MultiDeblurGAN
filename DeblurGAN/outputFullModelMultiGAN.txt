@@ -1348,3 +1348,16 @@
 (epoch 53 itr 460), unsupervised loss is 0.006964, L1 loss is 6.554502, loss is 0.023350
 (epoch 53 itr 480), unsupervised loss is 0.007384, L1 loss is 5.606517, loss is 0.021400
 (epoch 53 itr 500), unsupervised loss is 0.005312, L1 loss is 5.786250, loss is 0.019778
+(epoch 0 itr 20), unsupervised loss is 0.006996, L1 loss is 2.609944, loss is 0.013521
+(epoch 0 itr 20), unsupervised loss is 2.110896, L1 loss is 2.584567, loss is 4.695462
+(epoch 0 itr 40), unsupervised loss is 2.810174, L1 loss is 2.468857, loss is 5.279032
+(epoch 0 itr 60), unsupervised loss is 4.872087, L1 loss is 2.592395, loss is 7.464482
+(epoch 0 itr 80), unsupervised loss is 2.474271, L1 loss is 2.612211, loss is 5.086482
+(epoch 0 itr 100), unsupervised loss is 2.311017, L1 loss is 2.627173, loss is 4.938190
+(epoch 0 itr 120), unsupervised loss is 2.207826, L1 loss is 2.534468, loss is 4.742295
+(epoch 0 itr 140), unsupervised loss is 2.601741, L1 loss is 2.375785, loss is 4.977526
+(epoch 0 itr 160), unsupervised loss is 2.185325, L1 loss is 2.811262, loss is 4.996587
+(epoch 0 itr 180), unsupervised loss is 2.162587, L1 loss is 2.389754, loss is 4.552341
+(epoch 0 itr 200), unsupervised loss is 2.509167, L1 loss is 2.702959, loss is 5.212126
+(epoch 0 itr 220), unsupervised loss is 2.048440, L1 loss is 2.663744, loss is 4.712184
+(epoch 0 itr 240), unsupervised loss is 2.373027, L1 loss is 2.587475, loss is 4.960502

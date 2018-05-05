@@ -17,9 +17,9 @@ from skimage.measure import compare_psnr
 
 # In[2]:
 
-sys.argv += ['--dataroot', '/scratch/user/jiangziyu/train/',
+sys.argv += ['--dataroot', '/scratch/user/jiangziyu/test/',
              '--learn_residual', '--resize_or_crop', 'scale_width',
-             '--fineSize', '256','--batchSize','4','--name','fullModelWithGANLoss','--model','pix2pix']
+             '--fineSize', '256','--batchSize','1','--name','fullModelWithGANLoss','--model','pix2pix']
 
 opt = TrainOptions().parse()
 
@@ -136,8 +136,8 @@ netD_frozen = freeze_single_input(netD,num_layers_frozen=50);
 
 num_epoch=100
 num_workers=2
-learning_rate=0.0001
-lrd = 0.000002
+learning_rate=0.00005
+lrd = 0.000001
 transforms=None       #make data augmentation. For now using only the transforms defined above
 
 # ### Cycle consistency loss
@@ -156,12 +156,6 @@ We use the Adam solver [24] with a batch size of 1"""
 cycle_consistency_criterion= torch.nn.L1Loss()
 disLoss, _ = init_loss(opt, torch.cuda.FloatTensor)
 #criterion= forward_cycle_consistency_criterion+backward_cycle_consistency_criterion()
-
-#lambda_cycle is irrelevant for the moment as we use only cycle consistency loss as of now
-
-optimizer = torch.optim.Adam(itertools.chain(filter(lambda p: p.requires_grad, netG_frozen_deblur.parameters()),
-filter(lambda p: p.requires_grad, netG_frozen_blur.parameters())), lr=learning_rate)
-
 
 # ### Training
 
@@ -185,6 +179,9 @@ def model_type_gpu(blur_net, deblur_net):
 
 model_type_gpu(netG_frozen_deblur,netG_frozen_blur)      ##make the correct definition for the model
 
+optimizer = torch.optim.Adam(itertools.chain(filter(lambda p: p.requires_grad, netG_frozen_deblur.parameters())))
+
+
 
 for epoch in range(num_epoch):
     for i, data in enumerate(dataloader):
@@ -202,8 +199,8 @@ for epoch in range(num_epoch):
         deblur_out2 = netG_frozen_deblur.forward(images2)
         blur_model_outputs_f = netG_frozen_blur.forward(deblur_out0, deblur_out1, deblur_out2)
         loss_unsupervise = cycle_consistency_criterion(blur_model_outputs_f, images1)
-        loss_dis = disLoss.get_loss(netD_frozen, images1, deblur_out1, labels)
-        loss = loss_unsupervise + loss_dis*0.0025
+        loss_dis = disLoss.get_g_loss(netD_frozen, deblur_out1)
+        loss = loss_unsupervise*200 + loss_dis
         #backward loss part
         
         
@@ -211,14 +208,14 @@ for epoch in range(num_epoch):
         optimizer.step()
         
         if (i + 1) % 20 == 0:
-            print("(epoch %d itr %d), unsupervised loss is %f, L1 loss is %f, loss is %f"% (epoch, i+1, loss_unsupervise.data[0], loss_dis.data[0], loss.data[0]))
-            print("(epoch %d itr %d), unsupervised loss is %f, L1 loss is %f, loss is %f"% (epoch, i+1, loss_unsupervise.data[0], loss_dis.data[0], loss.data[0]), file=open("outputFullModelMultiGAN.txt", "a"))
+            print("(epoch %d itr %d), unsupervised loss is %f, L1 loss is %f, loss is %f"% (epoch, i+1, loss_unsupervise.data[0]*200, loss_dis.data[0], loss.data[0]))
+            print("(epoch %d itr %d), unsupervised loss is %f, L1 loss is %f, loss is %f"% (epoch, i+1, loss_unsupervise.data[0]*200, loss_dis.data[0], loss.data[0]), file=open("outputFullModelMultiGAN.txt", "a"))
          
         
-    if epoch%2 ==0:    ##save deblur once every 2 epochs
+    if epoch > 0:    ##save deblur once every epoch
         save_network(netG_deblur, 'deblur_G', opt.which_epoch)
         save_network(netG_deblur, 'deblur_G', epoch)
-    if epoch>50:
-        lr = learning_rate - lrd
+    if epoch > 10:
+        learning_rate = learning_rate - lrd
         for param_group in optimizer.param_groups:
-            param_group['lr'] = lr        
+            param_group['lr'] = learning_rate        
